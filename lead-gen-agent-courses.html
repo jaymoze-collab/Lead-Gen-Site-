@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lead Gen Agent — Recommended Courses</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3347;
+      --accent: #6c63ff;
+      --accent2: #00d4aa;
+      --text: #e8eaf0;
+      --muted: #8b90a7;
+      --tag-bg: #1e2235;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #1a1d27 0%, #12142a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 56px 32px 48px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 680px;
+      margin: 0 auto 14px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p {
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto 28px;
+      font-size: 1rem;
+    }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--accent2); }
+    .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+
+    /* ── Layout ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Watch Order ── */
+    .watch-order {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 0;
+    }
+    .watch-order .container { display: flex; align-items: flex-start; gap: 40px; flex-wrap: wrap; }
+    .watch-order-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      min-width: 140px;
+      padding-top: 8px;
+    }
+    .steps {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      color: var(--text);
+      text-decoration: none;
+      transition: border-color .2s, background .2s;
+    }
+    .step:hover { border-color: var(--accent); background: #1f2240; }
+    .step-num {
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── Sections ── */
+    .section { padding: 52px 0 20px; }
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .section-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .section-icon.purple { background: #2d1f6e; }
+    .section-icon.teal   { background: #0d3d35; }
+    .section-icon.blue   { background: #0d2545; }
+    .section-icon.orange { background: #3d2200; }
+    .section-icon.green  { background: #0d3520; }
+
+    .section-meta { flex: 1; }
+    .section-caps {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .section-title { font-size: 1.25rem; font-weight: 700; }
+    .section-desc { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    /* ── Cards ── */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-bottom: 40px; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color .2s, transform .15s;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+    .card-header {
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .card-title { font-weight: 700; font-size: 15px; line-height: 1.3; }
+    .card-class {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .card-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .badge-foundation { background: #2d1f6e; color: #a89cff; }
+    .badge-research   { background: #0d2545; color: #5aafff; }
+    .badge-outreach   { background: #3a1d00; color: #ffac42; }
+    .badge-pipeline   { background: #0d3520; color: #42e8a0; }
+    .badge-client     { background: #301020; color: #ff6eb0; }
+
+    .card-body { padding: 16px 20px; flex: 1; }
+    .card-why {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      line-height: 1.55;
+    }
+    .card-why strong { color: var(--text); }
+
+    .card-points { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .card-points li {
+      font-size: 13px;
+      color: var(--muted);
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.45;
+    }
+    .card-points li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 12px;
+    }
+
+    .card-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-chapter { font-size: 12px; color: var(--muted); }
+    .watch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: opacity .2s;
+    }
+    .watch-btn:hover { opacity: .85; }
+
+    /* ── Divider ── */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 8px 0 0; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.7rem; }
+      .cards { grid-template-columns: 1fr; }
+      .watch-order .container { flex-direction: column; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-badge">Agentic Coding School</div>
+  <h1>Build a <span>Lead Generation</span> Agent System</h1>
+  <p>A curated course map from Agentic Coding School — covering all 10 capabilities from prospect research to client reporting.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">16</div><div class="stat-label">Videos</div></div>
+    <div class="stat"><div class="stat-num">10</div><div class="stat-label">Capabilities</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Categories</div></div>
+  </div>
+</div>
+
+<!-- ── Watch Order ── -->
+<div class="watch-order">
+  <div class="container">
+    <div class="watch-order-label">Recommended Watch Order</div>
+    <div class="steps">
+      <a class="step" href="#foundation"><div class="step-num">1</div> Async Tasks & Subagents</a>
+      <a class="step" href="#foundation"><div class="step-num">2</div> Task List Management</a>
+      <a class="step" href="#foundation"><div class="step-num">3</div> Combining Skills & Subagents</a>
+      <a class="step" href="#automation"><div class="step-num">4</div> Scheduled Tasks</a>
+      <a class="step" href="#automation"><div class="step-num">5</div> Memory for Scheduled Tasks</a>
+      <a class="step" href="#outreach"><div class="step-num">6</div> Headless Mode</a>
+      <a class="step" href="#outreach"><div class="step-num">7</div> Simple Repetitive Tasks</a>
+      <a class="step" href="#pipeline"><div class="step-num">8</div> Data Analysis</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ── SECTION 1: Foundation ── -->
+  <div class="section" id="foundation">
+    <div class="section-header">
+      <div class="section-icon purple">⚙️</div>
+      <div class="section-meta">
+        <div class="section-caps">All Capabilities</div>
+        <div class="section-title">Foundation — Build This First</div>
+        <div class="section-desc">These patterns underpin every capability in your system. Watch these before anything else.</div>
+      </div>
+    </div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Async Tasks & Subagents</div>
+            <div class="card-class">Master Claude Code · Subagents</div>
+          </div>
+          <span class="card-badge badge-foundation">Foundation</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Run research, outreach, and reporting agents <strong>simultaneously in the background</strong> without blocking your main session.</div>
+          <ul class="card-points">
+            <li>Spawn independent agents for long-running or repetitive tasks</li>
+            <li>Monitor progress with <code>/tasks</code> without interrupting main session</li>
+            <li>Set up permissions in advance so background agents don't stall</li>
+            <li>Ideal for polling, continuous monitoring, and parallel workflows</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Subagents</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/0b2c565f" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Task List Management</div>
+            <div class="card-class">Master Claude Code · Advanced</div>
+          </div>
+          <span class="card-badge badge-foundation">Foundation</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Coordinate a multi-step pipeline: <strong>research → write → send → follow up</strong> with task dependencies so nothing runs out of order.</div>
+          <ul class="card-points">
+            <li>Tasks support dependencies — block "send message" until "research" completes</li>
+            <li>Multiple Claude sessions can share one task list via <code>CLAUDE_CODE_TASK_LIST_ID</code></li>
+            <li>Subagents get fresh context windows per task = higher quality output</li>
+            <li>Use <code>CTRL+O</code> to monitor all sub-agent progress in real time</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Advanced</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/110be290" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Combining Skills & Subagents</div>
+            <div class="card-class">Master Claude Code · Skills</div>
+          </div>
+          <span class="card-badge badge-foundation">Foundation</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Build specialist agents — researcher, writer, outreach agent — each equipped with <strong>custom skills and run in parallel</strong> across your prospect list.</div>
+          <ul class="card-points">
+            <li>Skills hold specialized logic (ICP rules, messaging guidelines, research criteria)</li>
+            <li>Sub-agents are parallelized instances that execute that logic at scale</li>
+            <li>Link skills to sub-agents via frontmatter: <code>skills: [prospect-researcher]</code></li>
+            <li>Sub-agents do NOT inherit skills from parent — must be explicitly declared</li>
+            <li>Sub-agents can fix side issues (errors, gaps) autonomously during execution</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Skills</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/adcf915b" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Context Window Management</div>
+            <div class="card-class">My Daily Workflows · Feb 2026</div>
+          </div>
+          <span class="card-badge badge-foundation">Foundation</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Long-running agent systems will degrade without context discipline. <strong>Keep your orchestrator lean</strong> by offloading to sub-agents.</div>
+          <ul class="card-points">
+            <li>AI is most capable in the first 30–40% of a fresh context window</li>
+            <li>Start a new session after planning; don't mix planning + execution in one window</li>
+            <li>Never load raw data (logs, prospect lists) into main session — use sub-agents</li>
+            <li>Use a "Plan File" to carry context across sessions without re-explaining everything</li>
+            <li>Monitor context % in the status bar; restart if it jumps unexpectedly</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Feb 2026</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/af426efb" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">--agent flag</div>
+            <div class="card-class">Master Claude Code · Subagents</div>
+          </div>
+          <span class="card-badge badge-foundation">Foundation</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Test and debug each specialist agent (researcher, writer, outreach) <strong>in isolation</strong> before wiring them into the full pipeline.</div>
+          <ul class="card-points">
+            <li>Run <code>claude --agent prospect-researcher</code> to interact with it directly</li>
+            <li>Built-in agents: Plan (read-only), Explore (codebase), general-purpose</li>
+            <li>Custom agents live in <code>.claude/agents/</code> as markdown files</li>
+            <li>Use Plan agent for architectural design without risk of file changes</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Subagents</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/daf091e2" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+    </div>
+    <hr class="divider" />
+  </div>
+
+  <!-- ── SECTION 2: Research ── -->
+  <div class="section" id="research">
+    <div class="section-header">
+      <div class="section-icon blue">🔍</div>
+      <div class="section-meta">
+        <div class="section-caps">Capabilities 2–3</div>
+        <div class="section-title">Account & Prospect Research</div>
+        <div class="section-desc">Automate deep research on target organizations and ideal prospects at scale.</div>
+      </div>
+    </div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Quick Spawning Subagents</div>
+            <div class="card-class">Master Claude Code · Subagents</div>
+          </div>
+          <span class="card-badge badge-research">Research</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Spin up a <strong>Haiku sub-agent per prospect</strong> to research dozens of accounts simultaneously using Exa MCP — no manual configuration needed.</div>
+          <ul class="card-points">
+            <li>Spawn agents on-the-fly with natural language: "spin up a Haiku sub-agent to research X"</li>
+            <li>Use Exa MCP for web search; results stay isolated from main session context</li>
+            <li>Specify model per task — Haiku for research volume, Opus for synthesis</li>
+            <li>Each agent returns only the relevant summary, not raw search data</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Subagents</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/b408940a" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Benchmarking Tools & MCPs</div>
+            <div class="card-class">Bonus Techniques · Advanced Techniques</div>
+          </div>
+          <span class="card-badge badge-research">Research</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Find the <strong>best search tool for your specific niche</strong> by A/B testing Exa vs. Brave vs. Tavily against your actual prospect lists.</div>
+          <ul class="card-points">
+            <li>Add benchmark instructions to CLAUDE.md to auto-test tools side-by-side</li>
+            <li>Two sub-agents run the same research task with different tools simultaneously</li>
+            <li>Results logged to <code>benchmark.md</code> with speed, relevance, and quality scores</li>
+            <li>Run 5–10 tests on real prospects before choosing your default research tool</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Advanced Techniques</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/7ce3ac9f" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">MCP Search Tool</div>
+            <div class="card-class">Master Claude Code · MCP Servers</div>
+          </div>
+          <span class="card-badge badge-research">Research</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Run LinkedIn, web search, and CRM MCPs <strong>without burning 25%+ of your context window</strong> on tool metadata.</div>
+          <ul class="card-points">
+            <li>Enable with <code>ENABLE_TOOL_SEARCH=true claude</code></li>
+            <li>Tools load on-demand instead of all at session start</li>
+            <li>Specify which MCP to use by name to help the agent find it quickly</li>
+            <li>Check context savings with <code>/context</code> command before and after</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: MCP Servers</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/50f33e1b" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+    </div>
+    <hr class="divider" />
+  </div>
+
+  <!-- ── SECTION 3: Outreach ── -->
+  <div class="section" id="outreach">
+    <div class="section-header">
+      <div class="section-icon orange">✉️</div>
+      <div class="section-meta">
+        <div class="section-caps">Capabilities 4–5</div>
+        <div class="section-title">Message Creation, Outreach & Human-in-the-Loop</div>
+        <div class="section-desc">Draft personalized messages, send outreach, field replies, and route approvals back to you.</div>
+      </div>
+    </div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Simple Repetitive Tasks</div>
+            <div class="card-class">Master Claude Code · 1M Context Window</div>
+          </div>
+          <span class="card-badge badge-outreach">Outreach</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Automate <strong>LinkedIn DMs and connection requests</strong> via Claude in Chrome — no LinkedIn API required.</div>
+          <ul class="card-points">
+            <li>Claude in Chrome handles browser-based actions that have no public API</li>
+            <li>Simple volume tasks (send DM, click connect) work reliably at 97–100% context</li>
+            <li>Distinguish simple volume tasks (fine to fill context) from complex creative tasks (need fresh windows)</li>
+            <li>Best for bulk connection campaigns and templated follow-up sequences</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: 1M Context Window</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/66ffbd82" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Headless Mode & Background Workflows</div>
+            <div class="card-class">Master Claude Code · Advanced</div>
+          </div>
+          <span class="card-badge badge-outreach">Outreach</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Run outreach pipelines programmatically and get <strong>structured JSON output for human approval flows</strong> before sending.</div>
+          <ul class="card-points">
+            <li>Run with <code>claude -p "your prompt" --output json</code> for machine-readable results</li>
+            <li>Define a JSON schema for drafted messages → parse → show for approval → send</li>
+            <li>Use <code>--allowed-tools</code> so agents don't stall waiting for permissions</li>
+            <li>Use <code>--max-turns</code> to control how much the agent does per run</li>
+            <li>Significantly cheaper than direct API calls for high-volume tasks</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Advanced</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/f6b647b6" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Claude Connectors with OAuth</div>
+            <div class="card-class">Master Claude Code · Claude Web & Desktop</div>
+          </div>
+          <span class="card-badge badge-outreach">Outreach</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Connect Gmail and Google Calendar via OAuth MCP to <strong>field replies, draft responses, and book appointments</strong> on your behalf.</div>
+          <ul class="card-points">
+            <li>Add OAuth-based connectors without static API keys</li>
+            <li>Authorize via browser flow, then Claude can read/send email and manage calendar</li>
+            <li>Refresh the Claude page after authorization to activate the connector</li>
+            <li>Toggle connector on/off per chat session as needed</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Claude Web & Desktop</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/b676ceab" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+    </div>
+    <hr class="divider" />
+  </div>
+
+  <!-- ── SECTION 4: Pipeline & Reporting ── -->
+  <div class="section" id="pipeline">
+    <div class="section-header">
+      <div class="section-icon green">📊</div>
+      <div class="section-meta">
+        <div class="section-caps">Capabilities 6–8</div>
+        <div class="section-title">Calendar, Pipeline Management & Reporting</div>
+        <div class="section-desc">Automate pipeline updates, flag hot prospects, generate reports, and schedule recurring reviews.</div>
+      </div>
+    </div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Scheduled Tasks</div>
+            <div class="card-class">Master Claude Code · Automation</div>
+          </div>
+          <span class="card-badge badge-pipeline">Pipeline</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Set up <strong>daily pipeline reviews, hot-prospect flags, and nurture recommendations</strong> that run automatically on a schedule.</div>
+          <ul class="card-points">
+            <li>Local tasks (unlimited) run on your machine; cloud tasks run in the background</li>
+            <li>Connect Stripe, PostHog, Airtable, Sentry via MCP connectors for data access</li>
+            <li>Always use "Run Now" to test a new task before trusting the schedule</li>
+            <li>Send results to Telegram bot for mobile notifications</li>
+            <li>Schedule: hourly, daily, or weekly cadences</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Automation</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/5b70e9f2" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Memory for Scheduled Tasks</div>
+            <div class="card-class">Master Claude Code · Automation</div>
+          </div>
+          <span class="card-badge badge-pipeline">Pipeline</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Give your pipeline agent <strong>persistent memory across runs</strong> so it tracks contacted prospects, sent messages, and completed actions without repeating itself.</div>
+          <ul class="card-points">
+            <li>Cloud tasks have no memory by default — use Airtable or Neon/PlanetScale as memory layer</li>
+            <li>Prompt: "Check previous records at start, log new actions on completion"</li>
+            <li>Configure Airtable connector with create + read-only permissions</li>
+            <li>For local tasks, writing to a local file is simpler and sufficient</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Automation</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/xC5aQgk2" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">/schedule Example</div>
+            <div class="card-class">Master Claude Code · Automation</div>
+          </div>
+          <span class="card-badge badge-pipeline">Pipeline</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">A practical walkthrough of <strong>setting up a recurring automated workflow</strong> — directly applicable to your daily pipeline monitoring.</div>
+          <ul class="card-points">
+            <li>Use the <code>/schedule</code> command to set up recurring tasks via natural language</li>
+            <li>Enable "Keep computer awake" and "Run on startup" for reliable local tasks</li>
+            <li>Use git worktree to isolate automated changes and auto-open PRs for review</li>
+            <li>Missed run while computer was off? It fires once on next app launch</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Automation</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/nqb0lIyS" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Data Analysis</div>
+            <div class="card-class">My Daily Workflows · Mar 2026</div>
+          </div>
+          <span class="card-badge badge-pipeline">Pipeline</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Query your CRM and pipeline data in <strong>natural language</strong> and generate visual HTML reports — no SQL required.</div>
+          <ul class="card-points">
+            <li>Provide read-only API keys to Claude for database and payment platforms</li>
+            <li>Ask: "Which prospects have gone cold in the last 14 days?" — Claude writes the query</li>
+            <li>Output to HTML for charts and tables you can share with stakeholders</li>
+            <li>Use <code>--dangerously-skip-permissions</code> to streamline repeated analysis sessions</li>
+            <li>Delete read-only keys immediately after analysis is complete</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Mar 2026</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/cc008f64" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Adding More Goal-Driven Events</div>
+            <div class="card-class">For Business · Analytics</div>
+          </div>
+          <span class="card-badge badge-pipeline">Pipeline</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Set up <strong>automated daily business reports</strong> sent straight to your phone — track which prospects are converting and why.</div>
+          <ul class="card-points">
+            <li>Connect PostHog + Stripe via MCP connectors for revenue and behavior data</li>
+            <li>Create a "New Remote Task" in Claude interface with a daily 9am schedule</li>
+            <li>Claude proposes and implements new tracking events based on your conversion goals</li>
+            <li>Reports delivered via Telegram bot — no dashboard to check manually</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Analytics</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/d3K3IyUe" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+    </div>
+    <hr class="divider" />
+  </div>
+
+  <!-- ── SECTION 5: Client ── -->
+  <div class="section" id="client">
+    <div class="section-header">
+      <div class="section-icon teal">🤝</div>
+      <div class="section-meta">
+        <div class="section-caps">Capabilities 9–10</div>
+        <div class="section-title">Client Onboarding & Progress Updates</div>
+        <div class="section-desc">Automate onboarding workflows, send recurring progress updates, and deliver final reports.</div>
+      </div>
+    </div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Scheduled Tasks</div>
+            <div class="card-class">Master Claude Code · Automation</div>
+          </div>
+          <span class="card-badge badge-client">Client</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Send <strong>automated progress updates and final reports</strong> to clients on a scheduled cadence via Telegram or email.</div>
+          <ul class="card-points">
+            <li>Schedule weekly check-in reports per client using separate cloud tasks</li>
+            <li>Use Telegram MCP connector to push updates to a client-specific bot or channel</li>
+            <li>Trigger a "final report" task automatically on project completion date</li>
+            <li>Customize the prompt per client with their goals and KPIs</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Automation</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/5b70e9f2" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Memory for Scheduled Tasks</div>
+            <div class="card-class">Master Claude Code · Automation</div>
+          </div>
+          <span class="card-badge badge-client">Client</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Track which updates each client has received so your <strong>onboarding agent never sends duplicate messages</strong> or skips a step.</div>
+          <ul class="card-points">
+            <li>Store onboarding state per client in Airtable (step completed, date sent)</li>
+            <li>Agent checks state at start of each run before deciding what to send next</li>
+            <li>Mark milestones complete to advance to the next onboarding step automatically</li>
+            <li>Works across cloud task runs — fully persistent between sessions</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="card-chapter">Chapter: Automation</span>
+          <a class="watch-btn" href="https://www.agenticcoding.school/v/xC5aQgk2" target="_blank">▶ Watch</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  Courses from <a href="https://www.agenticcoding.school" target="_blank">Agentic Coding School</a> &nbsp;·&nbsp;
+  Curated for the Lead Generation Agent use-case &nbsp;·&nbsp;
+  Generated with Claude Code
+</footer>
+
+</body>
+</html>

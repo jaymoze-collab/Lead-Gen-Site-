@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lead Gen Agent — Build Guide v3</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3347;
+      --accent: #6c63ff;
+      --accent2: #00d4aa;
+      --text: #e8eaf0;
+      --muted: #8b90a7;
+      --tag-bg: #1e2235;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    code {
+      background: #1e2235;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 12px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      color: #a89cff;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #1a1d27 0%, #12142a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 56px 32px 48px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+    .hero h1 { font-size: 2.4rem; font-weight: 800; line-height: 1.15; max-width: 720px; margin: 0 auto 14px; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { color: var(--muted); max-width: 580px; margin: 0 auto 28px; font-size: 1rem; }
+    .hero-stats { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 32px; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--accent2); }
+    .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+
+    /* ── Overall Progress ── */
+    .overall-progress {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 28px;
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .op-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .op-title { font-weight: 700; font-size: 14px; }
+    .op-count { font-size: 13px; color: var(--accent2); font-weight: 700; }
+    .progress-bar-track {
+      background: var(--border);
+      border-radius: 99px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      height: 100%;
+      border-radius: 99px;
+      width: 0%;
+      transition: width .4s ease;
+    }
+    .op-phases { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .op-phase {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color .2s, color .2s;
+    }
+    .op-phase:hover { border-color: var(--accent); color: var(--text); }
+
+    /* ── Watch Order ── */
+    .watch-order {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 36px 0;
+    }
+    .watch-order .container { display: flex; align-items: flex-start; gap: 40px; flex-wrap: wrap; }
+    .watch-order-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent2);
+      min-width: 140px; padding-top: 8px;
+    }
+    .steps { display: flex; gap: 10px; flex-wrap: wrap; flex: 1; }
+    .step {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--tag-bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 14px; font-size: 13px;
+      color: var(--text); text-decoration: none;
+      transition: border-color .2s, background .2s;
+    }
+    .step:hover { border-color: var(--accent); background: #1f2240; }
+    .step-num {
+      background: var(--accent); color: #fff; border-radius: 50%;
+      width: 20px; height: 20px; display: flex; align-items: center;
+      justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Sections ── */
+    .section { padding: 52px 0 8px; }
+    .section-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 28px; }
+    .section-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .section-icon.purple { background: #2d1f6e; }
+    .section-icon.teal   { background: #0d3d35; }
+    .section-icon.blue   { background: #0d2545; }
+    .section-icon.orange { background: #3d2200; }
+    .section-icon.green  { background: #0d3520; }
+
+    .section-meta { flex: 1; }
+    .section-caps { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .section-title { font-size: 1.25rem; font-weight: 700; }
+    .section-desc { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    /* ── Cards ── */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      transition: border-color .2s, transform .15s;
+      display: flex; flex-direction: column;
+    }
+    .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .card-header {
+      padding: 18px 20px 14px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+    }
+    .card-title { font-weight: 700; font-size: 15px; line-height: 1.3; }
+    .card-class { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .card-badge { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+    .badge-prereq     { background: #1a2a1a; color: #7fff7f; }
+    .badge-foundation { background: #2d1f6e; color: #a89cff; }
+    .badge-research   { background: #0d2545; color: #5aafff; }
+    .badge-outreach   { background: #3a1d00; color: #ffac42; }
+    .badge-pipeline   { background: #0d3520; color: #42e8a0; }
+    .badge-client     { background: #301020; color: #ff6eb0; }
+    .card-body { padding: 16px 20px; flex: 1; }
+    .card-why { font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.55; }
+    .card-why strong { color: var(--text); }
+    .card-points { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .card-points li { font-size: 13px; color: var(--muted); padding-left: 18px; position: relative; line-height: 1.45; }
+    .card-points li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 12px; }
+    .card-footer {
+      padding: 14px 20px; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-chapter { font-size: 12px; color: var(--muted); }
+    .watch-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent); color: #fff; font-size: 12px; font-weight: 600;
+      padding: 6px 14px; border-radius: 8px; text-decoration: none;
+      transition: opacity .2s;
+    }
+    .watch-btn:hover { opacity: .85; }
+
+    /* ── Build Checklist ── */
+    .build-checklist {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 48px;
+      overflow: hidden;
+    }
+
+    .checklist-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      gap: 16px;
+    }
+    .checklist-header:hover { background: #1f2240; }
+
+    .checklist-header-left { display: flex; align-items: center; gap: 12px; }
+    .checklist-icon { font-size: 18px; }
+    .checklist-title { font-weight: 700; font-size: 15px; }
+    .checklist-subtitle { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+    .checklist-header-right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+    .checklist-progress-wrap { text-align: right; }
+    .checklist-progress-text { font-size: 13px; font-weight: 700; color: var(--accent2); white-space: nowrap; }
+    .checklist-mini-bar {
+      background: var(--border); border-radius: 99px;
+      height: 4px; width: 80px; overflow: hidden; margin-top: 4px;
+    }
+    .checklist-mini-fill {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      height: 100%; border-radius: 99px; width: 0%;
+      transition: width .4s ease;
+    }
+    .chevron { color: var(--muted); font-size: 14px; transition: transform .25s; }
+    .checklist-body { display: block; }
+    .checklist-body.collapsed { display: none; }
+    .chevron.open { transform: rotate(180deg); }
+
+    .checklist-phase {
+      padding: 20px 24px 0;
+    }
+    .checklist-phase:last-child { padding-bottom: 24px; }
+
+    .phase-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .phase-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .checklist-items { display: flex; flex-direction: column; gap: 0; }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .checklist-item:hover { background: var(--surface2); }
+
+    .checklist-item input[type="checkbox"] { display: none; }
+
+    .check-box {
+      width: 20px; height: 20px; border-radius: 6px;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+      transition: background .2s, border-color .2s;
+      font-size: 12px;
+    }
+    .checklist-item.done .check-box {
+      background: var(--accent2);
+      border-color: var(--accent2);
+    }
+    .checklist-item.done .check-box::after { content: '✓'; color: #000; font-weight: 800; font-size: 12px; }
+
+    .check-content { flex: 1; }
+    .check-title {
+      font-size: 14px; font-weight: 500; line-height: 1.4;
+      transition: color .2s, text-decoration .2s;
+    }
+    .checklist-item.done .check-title { color: var(--muted); text-decoration: line-through; }
+    .check-detail { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.45; }
+    .checklist-item.done .check-detail { opacity: .6; }
+
+    .check-tag {
+      font-size: 10px; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; padding: 2px 7px; border-radius: 20px;
+      flex-shrink: 0; margin-top: 3px;
+    }
+    .tag-setup    { background: #1e2235; color: #8b90a7; border: 1px solid #2e3347; }
+    .tag-build    { background: #1a1f45; color: #7c8fff; border: 1px solid #2d3470; }
+    .tag-test     { background: #0d3020; color: #42c87e; border: 1px solid #1a5535; }
+    .tag-connect  { background: #2d1a00; color: #e0943a; border: 1px solid #5a3500; }
+    .tag-automate { background: #1f0d35; color: #bb7aff; border: 1px solid #3d1a6e; }
+
+    .checklist-divider { border: none; border-top: 1px solid var(--border); margin: 4px 12px; }
+
+    /* ── Divider ── */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 8px 0 0; }
+
+    /* ── Footer ── */
+    footer { text-align: center; padding: 40px 24px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.7rem; }
+      .cards { grid-template-columns: 1fr; }
+      .watch-order .container { flex-direction: column; gap: 16px; }
+      .checklist-mini-bar { width: 50px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-badge">Build Guide v3 · Agentic Coding School</div>
+  <h1>Build Your <span>Lead Generation</span> Agent System</h1>
+  <p>Watch the courses, complete the build checklist for each module, and ship a fully autonomous lead gen system — end to end.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">25</div><div class="stat-label">Videos</div></div>
+    <div class="stat"><div class="stat-num">10</div><div class="stat-label">Capabilities</div></div>
+    <div class="stat"><div class="stat-num" id="total-done">0</div><div class="stat-label">Steps Done</div></div>
+    <div class="stat"><div class="stat-num" id="total-steps">0</div><div class="stat-label">Total Steps</div></div>
+  </div>
+  <div class="overall-progress">
+    <div class="op-header">
+      <span class="op-title">Overall Build Progress</span>
+      <span class="op-count" id="op-pct">0%</span>
+    </div>
+    <div class="progress-bar-track"><div class="progress-bar-fill" id="op-bar"></div></div>
+    <div class="op-phases">
+      <a class="op-phase" href="#prereq">🔒 Prerequisites</a>
+      <a class="op-phase" href="#foundation">⚙️ Foundation</a>
+      <a class="op-phase" href="#research">🔍 Research</a>
+      <a class="op-phase" href="#outreach">✉️ Outreach</a>
+      <a class="op-phase" href="#pipeline">📊 Pipeline</a>
+      <a class="op-phase" href="#client">🤝 Client</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── Watch Order ── -->
+<div class="watch-order">
+  <div class="container">
+    <div class="watch-order-label">Recommended Watch Order</div>
+    <div class="steps">
+      <a class="step" href="#prereq"><div class="step-num">1</div> Permissions</a>
+      <a class="step" href="#prereq"><div class="step-num">2</div> CLAUDE.md Best Practices</a>
+      <a class="step" href="#prereq"><div class="step-num">3</div> Hooks</a>
+      <a class="step" href="#prereq"><div class="step-num">4</div> Goal In, Strategy Out</a>
+      <a class="step" href="#foundation"><div class="step-num">5</div> Async Tasks & Subagents</a>
+      <a class="step" href="#foundation"><div class="step-num">6</div> Task List Management</a>
+      <a class="step" href="#foundation"><div class="step-num">7</div> Combining Skills & Subagents</a>
+      <a class="step" href="#pipeline"><div class="step-num">8</div> Scheduled Tasks</a>
+      <a class="step" href="#pipeline"><div class="step-num">9</div> Memory for Scheduled Tasks</a>
+      <a class="step" href="#outreach"><div class="step-num">10</div> Headless Mode</a>
+      <a class="step" href="#outreach"><div class="step-num">11</div> Simple Repetitive Tasks</a>
+      <a class="step" href="#pipeline"><div class="step-num">12</div> Data Analysis</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ══════════════════════════════════════════
+       SECTION 0 · PREREQUISITES
+  ══════════════════════════════════════════ -->
+  <div class="section" id="prereq">
+    <div class="section-header">
+      <div class="section-icon teal">🔒</div>
+      <div class="section-meta">
+        <div class="section-caps">Watch Before Everything Else</div>
+        <div class="section-title">Pre-Build Prerequisites</div>
+        <div class="section-desc">Permissions, CLAUDE.md architecture, hooks, and prompt engineering. Without these, your agents will stall waiting for approvals, ignore instructions, or produce mediocre output no matter how well everything else is built.</div>
+      </div>
+    </div>
+
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Permissions</div><div class="card-class">Master Claude Code · The Fundamentals</div></div>
+          <span class="card-badge badge-prereq">Prereq</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Configure exactly which commands each agent can run <strong>without prompting you for approval</strong> — non-negotiable for an autonomous system.</div>
+          <ul class="card-points">
+            <li>Set up an allow list for safe repeated actions (web fetch, Airtable writes, email send)</li>
+            <li>Set up an ask list for destructive actions you always want to approve manually</li>
+            <li>Manage via <code>/permissions</code> command or directly in <code>settings.local.json</code></li>
+            <li>Project settings override global user settings — configure per-agent where needed</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: The Fundamentals</span><a class="watch-btn" href="https://www.agenticcoding.school/v/7f2102d0" target="_blank">▶ Watch</a></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Dangerously Skip Permissions</div><div class="card-class">Master Claude Code · The Fundamentals</div></div>
+          <span class="card-badge badge-prereq">Prereq</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Understand when and how to enable <strong>fully autonomous operation</strong> for your scheduled cloud tasks — with the right safety guardrails.</div>
+          <ul class="card-points">
+            <li>Use <code>--dangerously-skip-permissions</code> for scheduled tasks that must run unattended</li>
+            <li>Mitigate risk by explicitly forbidding web browsing in your prompt when not needed</li>
+            <li>Best practice: run autonomous tasks in a dedicated cloud environment, not your main machine</li>
+            <li>Always review logs after autonomous runs to verify actions taken were appropriate</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: The Fundamentals</span><a class="watch-btn" href="https://www.agenticcoding.school/v/5845eb84" target="_blank">▶ Watch</a></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Allowed Tools for Skills</div><div class="card-class">Master Claude Code · Skills</div></div>
+          <span class="card-badge badge-prereq">Prereq</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Scope each agent to <strong>only the tools it actually needs</strong> — prevents accidental data deletion, rogue web searches, or out-of-scope actions mid-pipeline.</div>
+          <ul class="card-points">
+            <li>Define <code>allowed-tools</code> at the top of every agent and skill file</li>
+            <li>Principle of least privilege: researcher gets Read + WebSearch, sender gets Gmail only</li>
+            <li>If unsure what a skill needs: do a clean run, then ask "What tools did you use?"</li>
+            <li>Can restrict Bash to specific commands only (e.g., <code>Bash(curl:*)</code>)</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Skills</span><a class="watch-btn" href="https://www.agenticcoding.school/v/be16cfc3" target="_blank">▶ Watch</a></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">CLAUDE.md Best Practices</div><div class="card-class">Master Claude Code · CLAUDE.md</div></div>
+          <span class="card-badge badge-prereq">Prereq</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">A bloated CLAUDE.md will cause agents to <strong>silently ignore your most important instructions</strong>. Learn to write ones that actually get followed.</div>
+          <ul class="card-points">
+            <li>Models follow ~150–300 instructions before accuracy degrades — be ruthless</li>
+            <li>Start minimal: only add a rule when an agent makes the same mistake twice</li>
+            <li>Put mission-critical instructions at the very top and bottom — not the middle</li>
+            <li>Use hooks to enforce critical rules programmatically instead of relying on markdown</li>
+            <li>Audit and prune after every model upgrade — newer models need fewer instructions</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: CLAUDE.md</span><a class="watch-btn" href="https://www.agenticcoding.school/v/ee08163c" target="_blank">▶ Watch</a></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Hierarchical CLAUDE.md</div><div class="card-class">Master Claude Code · CLAUDE.md</div></div>
+          <span class="card-badge badge-prereq">Prereq</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">For a multi-agent system, <strong>one root CLAUDE.md isn't enough</strong>. Learn to distribute context across directories so each agent only loads what it needs.</div>
+          <ul class="card-points">
+            <li>Root CLAUDE.md = high-level system overview and universal rules only</li>
+            <li>Sub-directory CLAUDE.md files load only when that agent accesses files in that folder</li>
+            <li>Saves significant context tokens — macOS instructions never load for a Windows task</li>
+            <li>Instructions are appended dynamically to tool results when relevant files are read</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: CLAUDE.md</span><a class="watch-btn" href="https://www.agenticcoding.school/v/59eabff5" target="_blank">▶ Watch</a></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">The Context Layer</div><div class="card-class">Context Engineering · The Solution Paradigm</div></div>
+          <span class="card-badge badge-prereq">Prereq</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">The complete architecture that makes agents behave like <strong>senior experts instead of interns</strong>: hierarchical CLAUDE.md files + hooks + on-demand skills working together.</div>
+          <ul class="card-points">
+            <li>Place CLAUDE.md files at "semantic boundaries" — where agent responsibilities shift</li>
+            <li>Hooks inject warnings/validation at specific moments (e.g., after a send action)</li>
+            <li>Skills load on-demand only when needed, keeping context lean</li>
+            <li>Extract tribal knowledge from your head into the context layer — agents can't guess it</li>
+            <li>Treat context files as infrastructure: update them when the system changes</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: The Solution Paradigm</span><a class="watch-btn" href="https://www.agenticcoding.school/v/4574c17e" target="_blank">▶ Watch</a></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Another Hook Example</div><div class="card-class">Master Claude Code · Hooks</div></div>
+          <span class="card-badge badge-prereq">Prereq</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Hooks are what make your pipeline <strong>automatically reactive</strong> — fire an Airtable update every time an email is sent, without you having to remember to trigger it.</div>
+          <ul class="card-points">
+            <li><code>PostToolUse</code> hooks fire after any tool call matching your pattern (e.g., after Edit, after a send)</li>
+            <li>Solves the problem of CLAUDE.md rules being ignored deep into long sessions</li>
+            <li>Use file-based filtering: only trigger the hook when specific files are modified</li>
+            <li>Must restart session or run <code>claude --continue</code> after adding hooks for them to activate</li>
+            <li>Use the <code>@claude-code-guide</code> agent to generate correct hook config automatically</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Hooks</span><a class="watch-btn" href="https://www.agenticcoding.school/v/1a9f6e25" target="_blank">▶ Watch</a></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Goal In, Strategy Out</div><div class="card-class">Prompt Engineering · Concepts</div></div>
+          <span class="card-badge badge-prereq">Prereq</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Most people write prescriptive prompts that cap the agent's output at their own knowledge level. <strong>Goal-oriented prompting</strong> lets agents find better approaches than you'd think of.</div>
+          <ul class="card-points">
+            <li>State the desired outcome, not step-by-step instructions</li>
+            <li>Define constraints (tone, length, data format) but not implementation steps</li>
+            <li>Ask for multiple approaches with trade-offs, then pick the best one</li>
+            <li>Your role shifts from architect to reviewer — faster and higher quality output</li>
+            <li>Apply this to every specialist agent system prompt you write</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Concepts</span><a class="watch-btn" href="https://www.agenticcoding.school/v/930dab04" target="_blank">▶ Watch</a></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Persona Vectors</div><div class="card-class">Prompt Engineering · Concepts</div></div>
+          <span class="card-badge badge-prereq">Prereq</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Generic agent prompts produce generic output. <strong>Specialist persona agents</strong> — a conversion copywriter, a cold email expert, a skeptical buyer — catch what generic ones miss.</div>
+          <ul class="card-points">
+            <li>Three-layer persona structure: identity (who) + epistemics (how they think) + constraints (hard rules)</li>
+            <li>Deploy a review team of 3–5 personas on every batch of drafted messages before sending</li>
+            <li>Example personas: Skeptical Buyer, Direct Response Copywriter, ICP Avatar, Devil's Advocate</li>
+            <li>Store persona prompts as skills so any agent can invoke them</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Concepts</span><a class="watch-btn" href="https://www.agenticcoding.school/v/188d5d3f" target="_blank">▶ Watch</a></div>
+      </div>
+
+    </div>
+
+    <!-- Build Checklist: Prerequisites -->
+    <div class="build-checklist" id="cl-prereq">
+      <div class="checklist-header" onclick="toggleChecklist('prereq')">
+        <div class="checklist-header-left">
+          <span class="checklist-icon">🔒</span>
+          <div>
+            <div class="checklist-title">Prerequisites Build Checklist</div>
+            <div class="checklist-subtitle">Complete these before writing a single line of agent code — they determine whether the whole system works autonomously or constantly stalls</div>
+          </div>
+        </div>
+        <div class="checklist-header-right">
+          <div class="checklist-progress-wrap">
+            <div class="checklist-progress-text" id="prog-prereq">0 / 13</div>
+            <div class="checklist-mini-bar"><div class="checklist-mini-fill" id="bar-prereq"></div></div>
+          </div>
+          <span class="chevron open" id="chev-prereq">▼</span>
+        </div>
+      </div>
+      <div class="checklist-body" id="body-prereq">
+
+        <div class="checklist-phase">
+          <div class="phase-label">Permissions & Autonomy</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="pre1">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Open <code>/permissions</code> and configure your global allow list</div>
+                <div class="check-detail">Add safe, repeated actions to the allow list: WebFetch, WebSearch, reading files, Airtable writes, Telegram sends. These will never prompt for approval again.</div>
+              </div>
+              <span class="check-tag tag-setup">Setup</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="pre2">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Add dangerous operations to the ask list</div>
+                <div class="check-detail">Always require approval for: sending emails to real prospects, deleting records, any irreversible actions. Configure in <code>.claude/settings.local.json</code>.</div>
+              </div>
+              <span class="check-tag tag-setup">Setup</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="pre3">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Add <code>allowed-tools</code> frontmatter to every agent file</div>
+                <div class="check-detail">researcher: <code>Read, WebSearch, WebFetch</code> — writer: <code>Read, Write</code> — sender: <code>Gmail MCP, Read</code> — pipeline-manager: <code>Airtable MCP, Read</code>. Enforce least privilege per agent.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="pre4">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Verify each agent runs without prompting for approval on its core task</div>
+                <div class="check-detail">Run each agent on a simple test task and confirm it completes end-to-end without asking for permission. If it stalls, add the missing tool to its allow list.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">CLAUDE.md Architecture</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="pre5">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Run <code>/init</code> to generate a base CLAUDE.md, then prune it aggressively</div>
+                <div class="check-detail">Delete anything that's a general best practice the model already knows. Keep only: system overview, agent roles, critical rules specific to your business, and pointers to sub-files.</div>
+              </div>
+              <span class="check-tag tag-setup">Setup</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="pre6">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Create a <code>CLAUDE.md</code> inside each agent's directory</div>
+                <div class="check-detail">Each sub-directory CLAUDE.md should contain only what's relevant to that agent's domain: the researcher's gets search strategy rules, the sender's gets outreach tone and escalation rules.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="pre7">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Add <code>important if</code> conditional blocks for context-specific rules</div>
+                <div class="check-detail">Example: "IMPORTANT IF you are drafting a message: always reference a specific detail from the prospect's research profile." This improves instruction adherence for task-specific rules.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Hooks — Automated Pipeline Reactions</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="pre8">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Create <code>.claude/hooks/</code> directory</div>
+                <div class="check-detail">This is where your hook scripts live. Claude Code reads this directory to know what to run automatically after specific tool events.</div>
+              </div>
+              <span class="check-tag tag-setup">Setup</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="pre9">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Set up a PostToolUse hook to update Airtable after every outreach action</div>
+                <div class="check-detail">Hook fires after the sender agent writes to any outreach log file. Action: update the matching Airtable prospect record with the action taken, timestamp, and new status. No manual pipeline updates needed.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="pre10">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Set up a pre-tool hook to block irreversible actions without approval</div>
+                <div class="check-detail">Block patterns like: sending to more than 10 prospects at once, deleting Airtable records, or modifying the onboarding sequence mid-run. Programmatic guardrails are more reliable than CLAUDE.md instructions.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Prompt Engineering</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="pre11">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Rewrite all agent system prompts using goal-oriented framing</div>
+                <div class="check-detail">Replace step-by-step instructions with outcome + constraints. Example: instead of "1. Search LinkedIn 2. Search Google 3. Find email" → "Given a prospect profile, find the 3 most relevant hooks for personalized outreach. Use any search tools available."</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="pre12">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Build a "Skeptical Buyer" persona reviewer agent</div>
+                <div class="check-detail">Create a sub-agent with identity: "You are a cynical senior executive who gets 50 cold emails a day." Epistemics: "Ask — would I actually read past line 2? Is this specific or generic?" Constraints: "Flag anything that sounds like a template." Run every batch of drafted messages through it before approval.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="pre13">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Build a "Direct Response Copywriter" persona reviewer agent</div>
+                <div class="check-detail">Identity: "You are a 20-year direct response copywriter." Epistemics: "Does the subject line create genuine curiosity? Is the CTA singular and frictionless? Is the value prop in the first sentence?" Use alongside the Skeptical Buyer to review every message draft.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <hr class="divider" />
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 1 · FOUNDATION
+  ══════════════════════════════════════════ -->
+  <div class="section" id="foundation">
+    <div class="section-header">
+      <div class="section-icon purple">⚙️</div>
+      <div class="section-meta">
+        <div class="section-caps">All Capabilities</div>
+        <div class="section-title">Foundation — Build This First</div>
+        <div class="section-desc">Core agent architecture, context management, and sub-agent patterns that underpin every capability in your system.</div>
+      </div>
+    </div>
+
+    <!-- Video Cards -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Async Tasks & Subagents</div><div class="card-class">Master Claude Code · Subagents</div></div>
+          <span class="card-badge badge-foundation">Foundation</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Run research, outreach, and reporting agents <strong>simultaneously in the background</strong> without blocking your main session.</div>
+          <ul class="card-points">
+            <li>Spawn independent agents for long-running or repetitive tasks</li>
+            <li>Monitor progress with <code>/tasks</code> without interrupting main session</li>
+            <li>Configure permissions in advance so agents don't stall mid-run</li>
+            <li>Ideal for polling, monitoring, and parallel workflows</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Subagents</span><a class="watch-btn" href="https://www.agenticcoding.school/v/0b2c565f" target="_blank">▶ Watch</a></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Task List Management</div><div class="card-class">Master Claude Code · Advanced</div></div>
+          <span class="card-badge badge-foundation">Foundation</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Coordinate a multi-step pipeline: <strong>research → write → send → follow up</strong> with task dependencies so nothing runs out of order.</div>
+          <ul class="card-points">
+            <li>Tasks support dependencies — block "send" until "research" completes</li>
+            <li>Multiple Claude sessions can share one task list via env var</li>
+            <li>Sub-agents get fresh context windows per task = higher quality output</li>
+            <li>Use <code>CTRL+O</code> to monitor all sub-agent activity in real time</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Advanced</span><a class="watch-btn" href="https://www.agenticcoding.school/v/110be290" target="_blank">▶ Watch</a></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Combining Skills & Subagents</div><div class="card-class">Master Claude Code · Skills</div></div>
+          <span class="card-badge badge-foundation">Foundation</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Build specialist agents (researcher, writer, outreach) each equipped with <strong>custom skills, run in parallel</strong> across your prospect list.</div>
+          <ul class="card-points">
+            <li>Skills hold specialized logic: ICP rules, messaging guidelines, research criteria</li>
+            <li>Link skills to sub-agents via frontmatter: <code>skills: [prospect-researcher]</code></li>
+            <li>Sub-agents do NOT inherit skills from parent — must be explicitly declared</li>
+            <li>Sub-agents autonomously fix side issues (errors, gaps) during execution</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Skills</span><a class="watch-btn" href="https://www.agenticcoding.school/v/adcf915b" target="_blank">▶ Watch</a></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Context Window Management</div><div class="card-class">My Daily Workflows · Feb 2026</div></div>
+          <span class="card-badge badge-foundation">Foundation</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Long-running agent systems degrade without context discipline. <strong>Keep your orchestrator lean</strong> by offloading heavy tasks to sub-agents.</div>
+          <ul class="card-points">
+            <li>AI is most capable in the first 30–40% of a fresh context window</li>
+            <li>Never load raw data into main session — use sub-agents to summarize first</li>
+            <li>Use a "Plan File" to carry context across sessions without re-explaining</li>
+            <li>Monitor context % in the status bar; restart if it jumps unexpectedly</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Feb 2026</span><a class="watch-btn" href="https://www.agenticcoding.school/v/af426efb" target="_blank">▶ Watch</a></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">--agent flag</div><div class="card-class">Master Claude Code · Subagents</div></div>
+          <span class="card-badge badge-foundation">Foundation</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Test and debug each specialist agent <strong>in isolation</strong> before wiring them into the full pipeline.</div>
+          <ul class="card-points">
+            <li>Run <code>claude --agent prospect-researcher</code> to interact directly with it</li>
+            <li>Built-in agents: Plan (read-only), Explore, general-purpose</li>
+            <li>Custom agents live in <code>.claude/agents/</code> as markdown files</li>
+            <li>Use Plan agent for architecture design without risk of file changes</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Subagents</span><a class="watch-btn" href="https://www.agenticcoding.school/v/daf091e2" target="_blank">▶ Watch</a></div>
+      </div>
+    </div>
+
+    <!-- Build Checklist -->
+    <div class="build-checklist" id="cl-foundation">
+      <div class="checklist-header" onclick="toggleChecklist('foundation')">
+        <div class="checklist-header-left">
+          <span class="checklist-icon">🛠️</span>
+          <div>
+            <div class="checklist-title">Foundation Build Checklist</div>
+            <div class="checklist-subtitle">Set up your project structure, agents directory, and core skills before building any capability</div>
+          </div>
+        </div>
+        <div class="checklist-header-right">
+          <div class="checklist-progress-wrap">
+            <div class="checklist-progress-text" id="prog-foundation">0 / 14</div>
+            <div class="checklist-mini-bar"><div class="checklist-mini-fill" id="bar-foundation"></div></div>
+          </div>
+          <span class="chevron open" id="chev-foundation">▼</span>
+        </div>
+      </div>
+      <div class="checklist-body" id="body-foundation">
+
+        <div class="checklist-phase">
+          <div class="phase-label">Project Setup</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f1">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Create your project directory and initialize Claude Code</div>
+                <div class="check-detail">Run <code>claude</code> inside your new project folder. Let it scan and generate a base <code>CLAUDE.md</code>.</div>
+              </div>
+              <span class="check-tag tag-setup">Setup</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f2">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Create the <code>.claude/agents/</code> directory</div>
+                <div class="check-detail">This is where all your specialist sub-agent markdown files will live.</div>
+              </div>
+              <span class="check-tag tag-setup">Setup</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f3">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Create the <code>.claude/skills/</code> directory</div>
+                <div class="check-detail">Project-scoped skills go here. These hold your specialized business logic and rules.</div>
+              </div>
+              <span class="check-tag tag-setup">Setup</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f4">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Write your master <code>CLAUDE.md</code> with system-level context</div>
+                <div class="check-detail">Include: your ICP definition, business context, tone of voice, what each specialist agent is responsible for, and what tools are available.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Specialist Agents</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f5">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Build the <code>prospect-researcher</code> sub-agent</div>
+                <div class="check-detail">Markdown file in <code>.claude/agents/</code>. System prompt: given a prospect name + company, research them and return a structured profile (role, pain points, recent activity, relevant triggers).</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f6">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Build the <code>message-writer</code> sub-agent</div>
+                <div class="check-detail">Takes a prospect profile as input. Outputs a personalized email and a LinkedIn message. Link your messaging-guidelines skill in its frontmatter.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f7">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Build the <code>outreach-sender</code> sub-agent</div>
+                <div class="check-detail">Handles sending approved messages, fielding replies, flagging responses that need your attention, and drafting follow-ups. Needs Gmail MCP access.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f8">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Build the <code>pipeline-manager</code> sub-agent</div>
+                <div class="check-detail">Updates CRM/Airtable records, categorizes prospects (hot/warm/cold/stalled), and generates pipeline status summaries.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f9">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Build the <code>client-success</code> sub-agent</div>
+                <div class="check-detail">Manages onboarding sequences, sends progress updates, and generates final reports. Links to onboarding-sequence skill.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Core Skills</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f10">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Write the <code>icp-criteria</code> skill</div>
+                <div class="check-detail">Define your Ideal Customer Profile in detail: company size, industry, tech stack signals, job titles, pain points, disqualifiers. This skill is referenced by the researcher agent.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f11">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Write the <code>messaging-guidelines</code> skill</div>
+                <div class="check-detail">Capture your tone, frameworks (AIDA, PAS, etc.), what to avoid, personalization rules, subject line formulas, and example messages that have worked.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f12">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Write the <code>personal-context</code> skill</div>
+                <div class="check-detail">Your background, expertise, social proof, case studies, and value proposition — so agents can reference it when writing personalized outreach.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Test & Validate</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f13">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Test each sub-agent in isolation using <code>claude --agent [name]</code></div>
+                <div class="check-detail">Run each agent directly and verify it behaves correctly before wiring into the pipeline. Fix system prompts based on output quality.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="f14">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Run a full end-to-end test with a single mock prospect</div>
+                <div class="check-detail">Feed one test prospect through the full chain: research → message draft → (skip send) → pipeline update. Verify all agents hand off correctly.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <hr class="divider" />
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 2 · RESEARCH
+  ══════════════════════════════════════════ -->
+  <div class="section" id="research">
+    <div class="section-header">
+      <div class="section-icon blue">🔍</div>
+      <div class="section-meta">
+        <div class="section-caps">Capabilities 2–3</div>
+        <div class="section-title">Account & Prospect Research</div>
+        <div class="section-desc">Automate deep research on target organizations and ideal prospects at scale.</div>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Quick Spawning Subagents</div><div class="card-class">Master Claude Code · Subagents</div></div>
+          <span class="card-badge badge-research">Research</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Spin up a <strong>Haiku sub-agent per prospect</strong> to research dozens of accounts simultaneously using Exa MCP — no manual configuration needed.</div>
+          <ul class="card-points">
+            <li>Spawn on-the-fly: "spin up a Haiku sub-agent to research X"</li>
+            <li>Use Exa MCP for web search; results stay isolated from main session context</li>
+            <li>Specify model per task: Haiku for volume, Opus for synthesis</li>
+            <li>Each agent returns only the relevant summary</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Subagents</span><a class="watch-btn" href="https://www.agenticcoding.school/v/b408940a" target="_blank">▶ Watch</a></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Benchmarking Tools & MCPs</div><div class="card-class">Bonus Techniques · Advanced Techniques</div></div>
+          <span class="card-badge badge-research">Research</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Find the <strong>best search tool for your specific niche</strong> by A/B testing Exa vs. Brave vs. Tavily against real prospect lists.</div>
+          <ul class="card-points">
+            <li>Add benchmark instructions to CLAUDE.md to auto-test tools side-by-side</li>
+            <li>Two sub-agents run the same task with different tools simultaneously</li>
+            <li>Results logged to <code>benchmark.md</code> with speed, relevance, quality scores</li>
+            <li>Run 5–10 tests on real prospects before committing to a tool</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Advanced Techniques</span><a class="watch-btn" href="https://www.agenticcoding.school/v/7ce3ac9f" target="_blank">▶ Watch</a></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">MCP Search Tool</div><div class="card-class">Master Claude Code · MCP Servers</div></div>
+          <span class="card-badge badge-research">Research</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Run LinkedIn, web search, and CRM MCPs <strong>without burning 25%+ of your context window</strong> on tool metadata.</div>
+          <ul class="card-points">
+            <li>Enable with <code>ENABLE_TOOL_SEARCH=true claude</code></li>
+            <li>Tools load on-demand instead of all at session start</li>
+            <li>Specify MCP by name when prompting to help agent find it quickly</li>
+            <li>Check savings with <code>/context</code> command before and after</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: MCP Servers</span><a class="watch-btn" href="https://www.agenticcoding.school/v/50f33e1b" target="_blank">▶ Watch</a></div>
+      </div>
+    </div>
+
+    <!-- Build Checklist -->
+    <div class="build-checklist" id="cl-research">
+      <div class="checklist-header" onclick="toggleChecklist('research')">
+        <div class="checklist-header-left">
+          <span class="checklist-icon">🔍</span>
+          <div>
+            <div class="checklist-title">Research Module Build Checklist</div>
+            <div class="checklist-subtitle">Wire up your research tools and configure the account + prospect intelligence pipeline</div>
+          </div>
+        </div>
+        <div class="checklist-header-right">
+          <div class="checklist-progress-wrap">
+            <div class="checklist-progress-text" id="prog-research">0 / 12</div>
+            <div class="checklist-mini-bar"><div class="checklist-mini-fill" id="bar-research"></div></div>
+          </div>
+          <span class="chevron open" id="chev-research">▼</span>
+        </div>
+      </div>
+      <div class="checklist-body" id="body-research">
+
+        <div class="checklist-phase">
+          <div class="phase-label">MCP Tool Setup</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="r1">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Install and authenticate Exa MCP server</div>
+                <div class="check-detail">Run <code>claude mcp add exa https://exa.ai/mcp</code> (or your Exa endpoint) and authenticate. Exa is purpose-built for semantic/company research.</div>
+              </div>
+              <span class="check-tag tag-connect">Connect</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="r2">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Install a second search MCP (Brave or Tavily) for benchmarking</div>
+                <div class="check-detail">You need at least two to run the A/B benchmark. This lets you pick the best tool for your specific niche before going into production.</div>
+              </div>
+              <span class="check-tag tag-connect">Connect</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="r3">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Enable MCP Tool Search to protect context window</div>
+                <div class="check-detail">Add <code>ENABLE_TOOL_SEARCH=true</code> to your environment or shell profile so tools load on-demand rather than all at session start.</div>
+              </div>
+              <span class="check-tag tag-setup">Setup</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Personal & Business Context</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="r4">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Build your personal context data store</div>
+                <div class="check-detail">Create a structured file (JSON or markdown) with: your background, expertise areas, past clients, case study results, and unique angles. The researcher agent uses this to find relevance hooks.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="r5">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Create your target account list (CSV or Airtable)</div>
+                <div class="check-detail">Minimum fields: Company name, domain, industry, target job titles, why they fit your ICP. This is the input queue for your researcher agents.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Research Agent Configuration</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="r6">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Define the research output schema</div>
+                <div class="check-detail">Decide exactly what the researcher returns: company summary, prospect role + tenure, recent news/triggers, LinkedIn activity, pain point hypothesis, and a relevance score (1–10).</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="r7">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Update <code>prospect-researcher</code> agent prompt with your output schema</div>
+                <div class="check-detail">Paste your schema into the agent's system prompt so it always returns data in the exact format your message-writer expects as input.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="r8">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Set up parallel research prompt: spawn one agent per prospect</div>
+                <div class="check-detail">Write the orchestration prompt: "For each prospect in [list], spawn a Haiku prospect-researcher sub-agent. Return all profiles when done."</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Benchmark & Test</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="r9">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Add benchmarking instructions to <code>CLAUDE.md</code></div>
+                <div class="check-detail">Instruct Claude to spawn two sub-agents for every research task during testing — one using Exa, one using your second MCP — and log results to <code>benchmark.md</code>.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="r10">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Run benchmark on 10 real target prospects</div>
+                <div class="check-detail">Compare results across both tools for relevance, depth, and accuracy. Choose the winner as your default research MCP.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="r11">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Remove benchmarking instructions from <code>CLAUDE.md</code> after choosing your tool</div>
+                <div class="check-detail">Update CLAUDE.md to specify your chosen MCP by name so all future research tasks use it directly.</div>
+              </div>
+              <span class="check-tag tag-setup">Setup</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="r12">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Test full batch research: run researcher on 20 prospects in parallel</div>
+                <div class="check-detail">Verify that all profiles come back correctly structured, relevance scores are meaningful, and no agent stalled. Review and refine the output quality.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <hr class="divider" />
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 3 · OUTREACH
+  ══════════════════════════════════════════ -->
+  <div class="section" id="outreach">
+    <div class="section-header">
+      <div class="section-icon orange">✉️</div>
+      <div class="section-meta">
+        <div class="section-caps">Capabilities 4–5</div>
+        <div class="section-title">Message Creation, Outreach & Human-in-the-Loop</div>
+        <div class="section-desc">Draft personalized messages, send outreach, field replies, and route approvals back to you before sending.</div>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Simple Repetitive Tasks</div><div class="card-class">Master Claude Code · 1M Context Window</div></div>
+          <span class="card-badge badge-outreach">Outreach</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Automate <strong>LinkedIn DMs and connection requests</strong> via Claude in Chrome — no LinkedIn API required.</div>
+          <ul class="card-points">
+            <li>Claude in Chrome handles browser-based actions with no public API</li>
+            <li>Simple volume tasks work reliably even at 97–100% context</li>
+            <li>Best for bulk connection campaigns and templated follow-up sequences</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: 1M Context Window</span><a class="watch-btn" href="https://www.agenticcoding.school/v/66ffbd82" target="_blank">▶ Watch</a></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Headless Mode & Background Workflows</div><div class="card-class">Master Claude Code · Advanced</div></div>
+          <span class="card-badge badge-outreach">Outreach</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Run outreach pipelines programmatically and get <strong>structured JSON for human approval flows</strong> before any message is sent.</div>
+          <ul class="card-points">
+            <li>Run <code>claude -p "prompt" --output json</code> for machine-readable drafts</li>
+            <li>Define a JSON schema: drafted message → parse → show for approval → send</li>
+            <li>Use <code>--allowed-tools</code> so agents don't stall waiting for permissions</li>
+            <li>Significantly cheaper than direct API calls for high-volume tasks</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Advanced</span><a class="watch-btn" href="https://www.agenticcoding.school/v/f6b647b6" target="_blank">▶ Watch</a></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Claude Connectors with OAuth</div><div class="card-class">Master Claude Code · Claude Web & Desktop</div></div>
+          <span class="card-badge badge-outreach">Outreach</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Connect Gmail and Google Calendar via OAuth MCP to <strong>field replies, draft responses, and book appointments</strong> on your behalf.</div>
+          <ul class="card-points">
+            <li>Add OAuth connectors without static API keys</li>
+            <li>Authorize via browser, then Claude can read/send email and manage calendar</li>
+            <li>Refresh Claude page after authorization to activate connector</li>
+            <li>Your Gmail and Google Calendar MCP servers are already connected in this session</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Claude Web & Desktop</span><a class="watch-btn" href="https://www.agenticcoding.school/v/b676ceab" target="_blank">▶ Watch</a></div>
+      </div>
+    </div>
+
+    <!-- Build Checklist -->
+    <div class="build-checklist" id="cl-outreach">
+      <div class="checklist-header" onclick="toggleChecklist('outreach')">
+        <div class="checklist-header-left">
+          <span class="checklist-icon">✉️</span>
+          <div>
+            <div class="checklist-title">Outreach Module Build Checklist</div>
+            <div class="checklist-subtitle">Build the message creation pipeline, approval workflow, sending automation, and reply handling</div>
+          </div>
+        </div>
+        <div class="checklist-header-right">
+          <div class="checklist-progress-wrap">
+            <div class="checklist-progress-text" id="prog-outreach">0 / 14</div>
+            <div class="checklist-mini-bar"><div class="checklist-mini-fill" id="bar-outreach"></div></div>
+          </div>
+          <span class="chevron open" id="chev-outreach">▼</span>
+        </div>
+      </div>
+      <div class="checklist-body" id="body-outreach">
+
+        <div class="checklist-phase">
+          <div class="phase-label">Channel Connections</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o1">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Authenticate Gmail MCP connector</div>
+                <div class="check-detail">Your Gmail MCP is already listed — authenticate it using the OAuth flow so Claude can read and send email on your behalf.</div>
+              </div>
+              <span class="check-tag tag-connect">Connect</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o2">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Authenticate Google Calendar MCP connector</div>
+                <div class="check-detail">Your Google Calendar MCP is already listed — authenticate it so the agent can check availability and book appointment slots.</div>
+              </div>
+              <span class="check-tag tag-connect">Connect</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o3">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Enable Claude in Chrome for LinkedIn automation</div>
+                <div class="check-detail">Run <code>claude --chrome</code> or enable the Chrome integration in settings. Test by having Claude open LinkedIn and send a test connection request.</div>
+              </div>
+              <span class="check-tag tag-connect">Connect</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Message Pipeline</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o4">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Define your approval JSON schema</div>
+                <div class="check-detail">Structure: <code>{ prospect_name, company, email_subject, email_body, linkedin_message, confidence_score, reasoning }</code>. This is what the agent outputs for your review before sending.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o5">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Configure <code>message-writer</code> to output your approval schema</div>
+                <div class="check-detail">Update the agent's system prompt to always return messages in your defined JSON schema. Add the schema as a reference in its linked skill file.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o6">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Build the human approval step</div>
+                <div class="check-detail">Create a simple review flow: output all drafted messages to a markdown or HTML file, or an Airtable view, so you can approve/reject/edit before the sender agent runs.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o7">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Configure <code>outreach-sender</code> to only send approved messages</div>
+                <div class="check-detail">Add a gate: the sender agent reads only records marked "approved" in your review file/Airtable. It should never send anything without explicit approval status.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Reply Handling & Follow-up</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o8">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Define reply classification rules</div>
+                <div class="check-detail">Categories: Interested (flag + draft reply), Not interested (log + suppress), Out of office (reschedule), Question (flag + draft answer), Unsubscribe (remove from list).</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o9">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Configure <code>outreach-sender</code> to monitor inbox and classify replies</div>
+                <div class="check-detail">Add Gmail MCP instructions: check for new replies to outreach threads, classify per your rules, draft responses, and flag "Interested" replies for your immediate review.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o10">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Set up appointment booking flow via Google Calendar MCP</div>
+                <div class="check-detail">When a prospect says "yes, let's talk," the agent checks your calendar, proposes 2–3 open slots, sends a calendar invite or Calendly link, and logs the meeting in your pipeline.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o11">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Add payment link sending capability</div>
+                <div class="check-detail">Configure a Stripe MCP or simple script that generates and sends a payment link when a prospect indicates readiness to proceed. Log this event in the pipeline.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Test & Validate</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o12">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Run message-writer on 5 researched prospects and review output quality</div>
+                <div class="check-detail">Check personalization, tone, relevance. Adjust the messaging-guidelines skill and agent prompt until output quality meets your standard.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o13">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Send a test email to yourself via Gmail MCP and verify delivery</div>
+                <div class="check-detail">Confirm the agent can send, the email looks correct in the recipient inbox, and the thread is logged properly.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="o14">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Test reply classification with mock replies (all 5 categories)</div>
+                <div class="check-detail">Send yourself test replies in each category and verify the agent classifies and handles them correctly. Confirm flagging and draft replies work as expected.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <hr class="divider" />
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 4 · PIPELINE & REPORTING
+  ══════════════════════════════════════════ -->
+  <div class="section" id="pipeline">
+    <div class="section-header">
+      <div class="section-icon green">📊</div>
+      <div class="section-meta">
+        <div class="section-caps">Capabilities 6–8</div>
+        <div class="section-title">Calendar, Pipeline Management & Reporting</div>
+        <div class="section-desc">Automate pipeline updates, flag hot prospects, generate reports, and schedule recurring reviews.</div>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Scheduled Tasks</div><div class="card-class">Master Claude Code · Automation</div></div>
+          <span class="card-badge badge-pipeline">Pipeline</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Set up <strong>daily pipeline reviews, hot-prospect flags, and nurture recommendations</strong> that run automatically on a schedule.</div>
+          <ul class="card-points">
+            <li>Local tasks (unlimited) vs. cloud tasks (3 on standard plan)</li>
+            <li>Connect Stripe, Airtable, PostHog via MCP connectors for data access</li>
+            <li>Always test with "Run Now" before trusting the schedule</li>
+            <li>Deliver reports to your phone via Telegram bot</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Automation</span><a class="watch-btn" href="https://www.agenticcoding.school/v/5b70e9f2" target="_blank">▶ Watch</a></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Memory for Scheduled Tasks</div><div class="card-class">Master Claude Code · Automation</div></div>
+          <span class="card-badge badge-pipeline">Pipeline</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Give your pipeline agent <strong>persistent memory across runs</strong> so it tracks state without repeating completed work.</div>
+          <ul class="card-points">
+            <li>Cloud tasks have no memory by default — use Airtable or Neon as memory layer</li>
+            <li>Prompt: "Check previous records at start, log new actions on completion"</li>
+            <li>Configure Airtable connector with create + read-only permissions</li>
+            <li>For local tasks, writing to a local file is simpler and sufficient</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Automation</span><a class="watch-btn" href="https://www.agenticcoding.school/v/xC5aQgk2" target="_blank">▶ Watch</a></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Data Analysis</div><div class="card-class">My Daily Workflows · Mar 2026</div></div>
+          <span class="card-badge badge-pipeline">Pipeline</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Query your CRM and pipeline data in <strong>plain English</strong> and generate visual HTML reports without writing SQL.</div>
+          <ul class="card-points">
+            <li>Provide read-only API keys to Claude for database and payment platforms</li>
+            <li>Ask: "Which prospects have gone cold in the last 14 days?"</li>
+            <li>Output to HTML for charts and tables you can share with stakeholders</li>
+            <li>Delete read-only keys immediately after analysis is complete</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Mar 2026</span><a class="watch-btn" href="https://www.agenticcoding.school/v/cc008f64" target="_blank">▶ Watch</a></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Adding More Goal-Driven Events</div><div class="card-class">For Business · Analytics</div></div>
+          <span class="card-badge badge-pipeline">Pipeline</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Set up <strong>automated daily business reports</strong> delivered to your phone — track which prospects are converting and why.</div>
+          <ul class="card-points">
+            <li>Connect PostHog + Stripe via MCP connectors for revenue and behavior data</li>
+            <li>Create a "New Remote Task" with a daily 9am schedule</li>
+            <li>Claude proposes new tracking events based on your conversion goals</li>
+            <li>Reports delivered via Telegram — no dashboard to manually check</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Analytics</span><a class="watch-btn" href="https://www.agenticcoding.school/v/d3K3IyUe" target="_blank">▶ Watch</a></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">/schedule Example</div><div class="card-class">Master Claude Code · Automation</div></div>
+          <span class="card-badge badge-pipeline">Pipeline</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Practical walkthrough of setting up a <strong>recurring automated workflow</strong> — directly applicable to daily pipeline monitoring.</div>
+          <ul class="card-points">
+            <li>Use <code>/schedule</code> to configure recurring tasks via natural language</li>
+            <li>Enable "Keep computer awake" and "Run on startup" for reliable local tasks</li>
+            <li>Missed run while offline? Fires once on next app launch</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Automation</span><a class="watch-btn" href="https://www.agenticcoding.school/v/nqb0lIyS" target="_blank">▶ Watch</a></div>
+      </div>
+    </div>
+
+    <!-- Build Checklist -->
+    <div class="build-checklist" id="cl-pipeline">
+      <div class="checklist-header" onclick="toggleChecklist('pipeline')">
+        <div class="checklist-header-left">
+          <span class="checklist-icon">📊</span>
+          <div>
+            <div class="checklist-title">Pipeline & Reporting Build Checklist</div>
+            <div class="checklist-subtitle">Set up your CRM layer, pipeline automation, scheduled reports, and mobile notifications</div>
+          </div>
+        </div>
+        <div class="checklist-header-right">
+          <div class="checklist-progress-wrap">
+            <div class="checklist-progress-text" id="prog-pipeline">0 / 15</div>
+            <div class="checklist-mini-bar"><div class="checklist-mini-fill" id="bar-pipeline"></div></div>
+          </div>
+          <span class="chevron open" id="chev-pipeline">▼</span>
+        </div>
+      </div>
+      <div class="checklist-body" id="body-pipeline">
+
+        <div class="checklist-phase">
+          <div class="phase-label">CRM & Data Layer</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p1">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Set up your Airtable pipeline base</div>
+                <div class="check-detail">Tables needed: Prospects (name, company, status, last contact, notes), Activities (type, date, outcome), Meetings, Deals. This is your source of truth.</div>
+              </div>
+              <span class="check-tag tag-setup">Setup</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p2">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Add and authenticate Airtable MCP connector</div>
+                <div class="check-detail">Install the Airtable MCP server and grant create + read permissions. This lets your pipeline-manager agent read and update records automatically.</div>
+              </div>
+              <span class="check-tag tag-connect">Connect</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p3">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Define your pipeline stages and status labels</div>
+                <div class="check-detail">Example: New → Contacted → Replied → Meeting Booked → Proposal Sent → Won / Lost / Nurture. The pipeline-manager agent uses these to categorize and move prospects.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Pipeline Agent</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p4">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Configure <code>pipeline-manager</code> to auto-update records after each outreach action</div>
+                <div class="check-detail">After every send, reply, meeting, or status change event, the pipeline-manager updates the Airtable record with the action, timestamp, and new status.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p5">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Define hot/warm/cold/stalled classification rules</div>
+                <div class="check-detail">Rules example: Hot = replied positively or meeting booked within 7 days. Stalled = no activity in 14+ days. Cold = no reply after 3 touchpoints. Add these to CLAUDE.md.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p6">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Configure <code>pipeline-manager</code> to flag stalled prospects and draft re-engagement nudges</div>
+                <div class="check-detail">Agent checks for stalled prospects daily, drafts a re-engagement message using the message-writer skill, and adds it to your approval queue.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Scheduled Reports</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p7">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Set up a Telegram bot for mobile report delivery</div>
+                <div class="check-detail">Create a bot via BotFather, get your bot token, and find your Telegram User ID. Add these as environment variables in your Claude Code scheduled task config.</div>
+              </div>
+              <span class="check-tag tag-setup">Setup</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p8">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Build your daily pipeline report template</div>
+                <div class="check-detail">Define what the daily report includes: hot prospects count + names, new replies, meetings booked, stalled count, recommendations for today's actions. Keep it scannable for Telegram.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p9">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Create a scheduled task for daily 8am pipeline report</div>
+                <div class="check-detail">Use <code>claude scheduled create</code> or the desktop app. Set the prompt to run the pipeline-manager, generate the report, and send it via Telegram. Test with "Run Now" first.</div>
+              </div>
+              <span class="check-tag tag-automate">Automate</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p10">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Create a scheduled task for weekly pipeline analytics report</div>
+                <div class="check-detail">Weekly report: what's working (conversion rates per channel, message type), what's stalled, revenue forecast, and specific next-step recommendations. Generate as HTML + send summary to Telegram.</div>
+              </div>
+              <span class="check-tag tag-automate">Automate</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p11">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Add Airtable as memory layer so reports don't repeat data</div>
+                <div class="check-detail">Instruct the scheduled task: "Log each report run with a timestamp and summary to Airtable. At start of next run, check what was last reported and only surface new developments."</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Test & Validate</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p12">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Run "Run Now" on daily report task and verify Telegram delivery</div>
+                <div class="check-detail">Confirm the report arrives on your phone, data is accurate, formatting is readable, and the Airtable memory log was created.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p13">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Manually add 5 prospects at different pipeline stages and verify classification</div>
+                <div class="check-detail">Test that hot/warm/cold/stalled logic works correctly and the daily report correctly surfaces each category.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p14">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Ask Claude natural language questions about your pipeline and verify accuracy</div>
+                <div class="check-detail">Try: "Which prospects are stalled?", "What's my meeting conversion rate this month?", "Who should I follow up with today?" Refine until answers are accurate and useful.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="p15">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Run the weekly report and review recommendations quality</div>
+                <div class="check-detail">Assess whether the recommended actions are specific and actionable. Adjust the report template prompt until the recommendations are genuinely useful for decision-making.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <hr class="divider" />
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 5 · CLIENT
+  ══════════════════════════════════════════ -->
+  <div class="section" id="client">
+    <div class="section-header">
+      <div class="section-icon teal">🤝</div>
+      <div class="section-meta">
+        <div class="section-caps">Capabilities 9–10</div>
+        <div class="section-title">Client Onboarding & Progress Updates</div>
+        <div class="section-desc">Automate onboarding workflows, send recurring progress updates, and deliver polished final reports.</div>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Scheduled Tasks</div><div class="card-class">Master Claude Code · Automation</div></div>
+          <span class="card-badge badge-client">Client</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Send <strong>automated progress updates and final reports</strong> to clients on a scheduled cadence via email or Telegram.</div>
+          <ul class="card-points">
+            <li>Schedule weekly check-in reports per client using separate cloud tasks</li>
+            <li>Trigger a "final report" task automatically on project completion date</li>
+            <li>Customize the prompt per client with their goals and KPIs</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Automation</span><a class="watch-btn" href="https://www.agenticcoding.school/v/5b70e9f2" target="_blank">▶ Watch</a></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Memory for Scheduled Tasks</div><div class="card-class">Master Claude Code · Automation</div></div>
+          <span class="card-badge badge-client">Client</span>
+        </div>
+        <div class="card-body">
+          <div class="card-why">Track which updates each client has received so your onboarding agent <strong>never sends duplicates or skips a step</strong>.</div>
+          <ul class="card-points">
+            <li>Store onboarding state per client in Airtable (step completed, date sent)</li>
+            <li>Agent checks state at start of each run before deciding what to send next</li>
+            <li>Mark milestones complete to advance to the next onboarding step automatically</li>
+          </ul>
+        </div>
+        <div class="card-footer"><span class="card-chapter">Chapter: Automation</span><a class="watch-btn" href="https://www.agenticcoding.school/v/xC5aQgk2" target="_blank">▶ Watch</a></div>
+      </div>
+    </div>
+
+    <!-- Build Checklist -->
+    <div class="build-checklist" id="cl-client">
+      <div class="checklist-header" onclick="toggleChecklist('client')">
+        <div class="checklist-header-left">
+          <span class="checklist-icon">🤝</span>
+          <div>
+            <div class="checklist-title">Client Success Build Checklist</div>
+            <div class="checklist-subtitle">Build the onboarding sequence, automated progress updates, and final report delivery system</div>
+          </div>
+        </div>
+        <div class="checklist-header-right">
+          <div class="checklist-progress-wrap">
+            <div class="checklist-progress-text" id="prog-client">0 / 13</div>
+            <div class="checklist-mini-bar"><div class="checklist-mini-fill" id="bar-client"></div></div>
+          </div>
+          <span class="chevron open" id="chev-client">▼</span>
+        </div>
+      </div>
+      <div class="checklist-body" id="body-client">
+
+        <div class="checklist-phase">
+          <div class="phase-label">Onboarding Setup</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="c1">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Define your onboarding sequence steps</div>
+                <div class="check-detail">Map out every step a new client goes through: welcome email, kickoff call scheduling, onboarding questionnaire, access provisioning, Week 1 check-in, Week 2 progress update, etc.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="c2">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Create the <code>onboarding-sequence</code> skill</div>
+                <div class="check-detail">Document each step: what gets sent, when, what it should contain, what success looks like. The client-success agent references this to know what to do next for each client.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="c3">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Add a Clients table to your Airtable base</div>
+                <div class="check-detail">Fields: Client name, contact email, project start date, project end date, current onboarding step, last update sent, project notes, and status (active/complete).</div>
+              </div>
+              <span class="check-tag tag-setup">Setup</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="c4">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Write welcome email and kickoff templates</div>
+                <div class="check-detail">Create template files the agent can use and personalize for each client. Include: what to expect, next steps, how to reach you, and a calendar link for the kickoff call.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Automated Updates</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="c5">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Define your progress update format</div>
+                <div class="check-detail">What clients receive weekly: work completed this week, what's happening next week, any blockers or questions, current status (on track / needs attention), and a confidence score.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="c6">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Configure <code>client-success</code> agent to generate weekly update emails</div>
+                <div class="check-detail">Agent reads Airtable for each active client, pulls recent activity and notes, generates a personalized update email using your template, and adds it to your review queue before sending.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="c7">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Create a scheduled task for weekly client updates (Monday morning)</div>
+                <div class="check-detail">Set up a scheduled task that runs every Monday, generates all active client updates, and places them in your review queue for same-day approval and send.</div>
+              </div>
+              <span class="check-tag tag-automate">Automate</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="c8">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Set up state memory so updates don't repeat prior content</div>
+                <div class="check-detail">After each update is sent, log the key points covered to Airtable. Instruct the agent: "Review last week's update before writing this week's — don't repeat what was already shared."</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Final Report & Offboarding</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="c9">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Define your final report structure</div>
+                <div class="check-detail">Sections: Executive summary, goals vs. results, key deliverables, metrics achieved, lessons learned, next steps / renewal recommendations. This is your proof-of-work document.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="c10">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Configure <code>client-success</code> to auto-generate final report on project end date</div>
+                <div class="check-detail">When a client's Airtable project end date arrives, the agent compiles all activity logs, updates, and outcomes into the final report template, generates an HTML version, and sends for your review.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="c11">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Add a renewal / referral ask to the final report workflow</div>
+                <div class="check-detail">After the final report is sent, the agent automatically drafts a renewal proposal or referral ask based on the project outcome and adds it to your outreach queue.</div>
+              </div>
+              <span class="check-tag tag-build">Build</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="checklist-divider" />
+
+        <div class="checklist-phase">
+          <div class="phase-label">Test & Validate</div>
+          <div class="checklist-items">
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="c12">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Run through the full onboarding sequence with a mock client</div>
+                <div class="check-detail">Add a test client to Airtable, trigger the onboarding task, and verify each step executes in the correct order, emails look great, and state advances properly in Airtable.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+            <div class="checklist-item" onclick="toggleItem(this)" data-id="c13">
+              <div class="check-box"></div>
+              <div class="check-content">
+                <div class="check-title">Generate a final report for a mock completed project and review quality</div>
+                <div class="check-detail">Set a test client's end date to today, trigger the final report task, and review the output. Refine the template until it's something you'd genuinely send to a real client.</div>
+              </div>
+              <span class="check-tag tag-test">Test</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /section client -->
+
+</div><!-- /container -->
+
+<footer>
+  Courses from <a href="https://www.agenticcoding.school" target="_blank">Agentic Coding School</a> &nbsp;·&nbsp;
+  Build guide for Lead Generation Agent System &nbsp;·&nbsp;
+  Progress saved automatically in your browser
+</footer>
+
+<script>
+  // ── Data ──────────────────────────────────────────────────────────────
+  const SECTIONS = [
+    { id: 'prereq',     total: 13 },
+    { id: 'foundation', total: 14 },
+    { id: 'research',   total: 12 },
+    { id: 'outreach',   total: 14 },
+    { id: 'pipeline',   total: 15 },
+    { id: 'client',     total: 13 },
+  ];
+
+  const STORAGE_KEY = 'lgag_checklist_v1';
+
+  // ── State ─────────────────────────────────────────────────────────────
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch { return {}; }
+  }
+
+  function saveState(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  let state = loadState();
+
+  // ── Toggle item ───────────────────────────────────────────────────────
+  function toggleItem(el) {
+    const id = el.dataset.id;
+    state[id] = !state[id];
+    saveState(state);
+    renderItem(el, state[id]);
+    updateAll();
+  }
+
+  function renderItem(el, done) {
+    if (done) el.classList.add('done');
+    else el.classList.remove('done');
+  }
+
+  // ── Toggle section collapse ───────────────────────────────────────────
+  function toggleChecklist(sectionId) {
+    const body  = document.getElementById('body-' + sectionId);
+    const chev  = document.getElementById('chev-' + sectionId);
+    const open  = !body.classList.contains('collapsed');
+    if (open) {
+      body.classList.add('collapsed');
+      chev.classList.remove('open');
+    } else {
+      body.classList.remove('collapsed');
+      chev.classList.add('open');
+    }
+  }
+
+  // ── Update progress displays ──────────────────────────────────────────
+  function updateAll() {
+    let totalDone = 0;
+    let totalAll  = 0;
+
+    SECTIONS.forEach(({ id, total }) => {
+      const items = document.querySelectorAll(`#cl-${id} .checklist-item`);
+      let done = 0;
+      items.forEach(item => {
+        const isDone = !!state[item.dataset.id];
+        renderItem(item, isDone);
+        if (isDone) done++;
+      });
+
+      const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+      document.getElementById(`prog-${id}`).textContent = `${done} / ${total}`;
+      document.getElementById(`bar-${id}`).style.width  = pct + '%';
+
+      totalDone += done;
+      totalAll  += total;
+    });
+
+    // Overall
+    const overallPct = totalAll > 0 ? Math.round((totalDone / totalAll) * 100) : 0;
+    document.getElementById('total-done').textContent  = totalDone;
+    document.getElementById('total-steps').textContent = totalAll;
+    document.getElementById('op-pct').textContent      = overallPct + '%';
+    document.getElementById('op-bar').style.width      = overallPct + '%';
+  }
+
+  // ── Init ──────────────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    updateAll();
+  });
+</script>
+</body>
+</html>
